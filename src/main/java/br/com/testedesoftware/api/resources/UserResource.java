@@ -1,6 +1,5 @@
 package br.com.testedesoftware.api.resources;
 
-import br.com.testedesoftware.api.domain.User;
 import br.com.testedesoftware.api.domain.dto.UserDTO;
 import br.com.testedesoftware.api.services.UserService;
 import org.modelmapper.ModelMapper;
