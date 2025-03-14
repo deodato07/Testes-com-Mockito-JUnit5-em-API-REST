@@ -1,6 +1,7 @@
 package br.com.testedesoftware.api.resources.exceptions;
 
 import br.com.testedesoftware.api.domain.dto.UserDTO;
+import br.com.testedesoftware.api.services.exceptions.DataIntegratyViolationException;
 import br.com.testedesoftware.api.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ResourceExceptionHandlerTest {
 
     public static final String OBJETO_NAO_ENCONTRADO = "Objeto não encontrado!";
+    public static final String EMAIL_JA_CADASTRADO_NO_SISTEMA = "Email já cadastrado no sistema";
     @InjectMocks
     private ResourceExceptionHandler exceptionHandler;
 
@@ -42,6 +44,18 @@ class ResourceExceptionHandlerTest {
     }
 
     @Test
-    void dataIntegratyViolationException() {
+    void dataIntegrityViolationException() {
+        ResponseEntity<StandardError> response = exceptionHandler
+                .dataIntegratyViolationException(
+                        new DataIntegratyViolationException(EMAIL_JA_CADASTRADO_NO_SISTEMA),
+                        new MockHttpServletRequest());
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(ResponseEntity.class, response.getClass());
+        assertEquals(StandardError.class, response.getBody().getClass());
+        assertEquals(EMAIL_JA_CADASTRADO_NO_SISTEMA, response.getBody().getError());
+        assertEquals(400, response.getBody().getStatus());
     }
 }
